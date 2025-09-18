@@ -1,70 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign up</title>
-    <link rel="stylesheet" href="style.css" />
-    <script src="https://www.gstatic.com/firebasejs/9.8.4/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.8.4/firebase-auth-compat.js"></script>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar">
-      <a href="index.html" class="nav-title">Meetly</a>
-      <div class="nav-links">
-        <a href="#" id="aboutBtn">About</a>
-        <a href="signIn.html">Sign In</a>
-      </div>
-    </nav>
-    <div class="form">
-      <h2 class="form-title">Sign Up to Meetly</h2>
-      <div class="email">
-        <label for="email">Email</label>
-        <input
-          type="email"
-          name="email"
-          id="email"
-          placeholder="Write your email"
-        />
-      </div>
-      <div class="pass">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          name="password"
-          id="password"
-          placeholder="password"
-        />
-      </div>
-      <button id="submit-btn" onclick="signUp()">Sign Up</button>
-      <p>Already have an account ? <a href="signIn.html">Sign In</a></p>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Search Users</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="w-full bg-[#181818] text-white flex justify-between items-center px-4 sm:px-8 py-4 shadow">
+    <div class="text-2xl font-bold tracking-wide">Meetly</div>
+    <div class="flex gap-4 sm:gap-8">
+      <button id="aboutBtn" class="hover:text-blue-400 transition">About Us</button>
+      <button id="addBtn" class="hover:text-blue-400 transition">Add New</button>
+      <button id="scheduleBtn" class="hover:text-blue-400 transition flex items-center gap-2">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        Schedule Meeting
+      </button>
     </div>
-    <!-- About Modal -->
-    <div id="aboutModal" class="modal">
-      <div class="modal-content">
-        <span class="close-btn" id="aboutClose">&times;</span>
-        <h2>About Meetly</h2>
-        <p>
-          This website allows you to search and explore user profiles. Click on any card to view full details. You can also add new users to the directory using the "Add New" button.
-      
-        </p>
-      </div>
+  </nav>
+
+  <div class="flex flex-col gap-10 items-center min-h-screen px-2">
+    <input class="inp w-full max-w-md px-5 py-5 rounded outline-none bg-[#111] text-[#888]" type="text" placeholder="Search...">
+    <div class="cards flex gap-6 flex-wrap justify-center w-full"></div>
+  </div>
+
+  <!-- Modal for user details -->
+  <div class="modal" id="userModal">
+    <div class="modal-content">
+      <span class="close-btn">&times;</span>
+      <img id="modalPic" />
+      <h2 id="modalName"></h2>
+      <p id="modalBio"></p>
+      <p><strong>Email:</strong> <span id="modalEmail"></span></p>
+      <p><strong>Schooling:</strong> <span id="modalSchooling"></span></p>
+      <p><strong>Qualification:</strong> <span id="modalQualification"></span></p>
+      <p>
+        <a id="modalLinkedin" target="_blank">LinkedIn</a> |
+        <a id="modalGithub" target="_blank">GitHub</a>
+      </p>
     </div>
-    <script src="main.js"></script>
-    <script>
-      // About modal logic
-      document.getElementById("aboutBtn").onclick = function () {
-        document.getElementById("aboutModal").style.display = "flex";
-      };
-      document.getElementById("aboutClose").onclick = function () {
-        document.getElementById("aboutModal").style.display = "none";
-      };
-      document.getElementById("aboutModal").onclick = function (e) {
-        if (e.target === this) this.style.display = "none";
-      };
-    </script>
-  </body>
+  </div>
+
+  <!-- About Us Modal -->
+  <div class="modal" id="aboutModal">
+    <div class="modal-content">
+      <span class="close-btn" id="aboutClose">&times;</span>
+      <h2>About Us</h2>
+      <p>
+        This website allows you to search and explore user profiles. Click on any card to view full details. You can also add new users to the directory using the "Add New" button.
+      </p>
+      <p class="mt-4 text-sm text-gray-400">Made with ❤️ using HTML, CSS, and JavaScript.</p>
+    </div>
+  </div>
+
+  <!-- Add New User Modal -->
+  <div class="modal" id="addModal">
+    <div class="modal-content">
+      <span class="close-btn" id="addClose">&times;</span>
+      <h2>Add New User</h2>
+      <form id="addUserForm" class="flex flex-col gap-3 mt-4">
+        <input type="text" placeholder="Name" name="name" required class="px-3 py-2 rounded bg-[#222] text-white" />
+        <input type="text" placeholder="Profile Image URL" name="pic" required class="px-3 py-2 rounded bg-[#222] text-white" />
+        <input type="text" placeholder="Bio" name="bio" required class="px-3 py-2 rounded bg-[#222] text-white" />
+        <input type="email" placeholder="Email" name="email" required class="px-3 py-2 rounded bg-[#222] text-white" />
+        <input type="text" placeholder="Schooling" name="schooling" class="px-3 py-2 rounded bg-[#222] text-white" />
+        <input type="text" placeholder="Qualification" name="qualification" class="px-3 py-2 rounded bg-[#222] text-white" />
+        <input type="url" placeholder="LinkedIn URL" name="linkedin" class="px-3 py-2 rounded bg-[#222] text-white" />
+        <input type="url" placeholder="GitHub URL" name="github" class="px-3 py-2 rounded bg-[#222] text-white" />
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded mt-2">Add User</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Schedule Meeting Modal -->
+  <div class="modal" id="scheduleModal">
+    <div class="modal-content">
+      <span class="close-btn" id="scheduleClose">&times;</span>
+      <h2>Schedule Meeting</h2>
+      <form id="scheduleForm" class="flex flex-col gap-3 mt-4">
+        <input type="text" id="searchMember" placeholder="Search member by name..." class="px-3 py-2 rounded bg-[#222] text-white" autocomplete="off" />
+        <select id="memberSelect" class="px-3 py-2 rounded bg-[#222] text-white" required>
+          <option value="">Select member</option>
+        </select>
+        <input type="text" id="meetingSubject" placeholder="Meeting Subject" class="px-3 py-2 rounded bg-[#222] text-white" required />
+        <input type="datetime-local" id="meetingTime" class="px-3 py-2 rounded bg-[#222] text-white" required />
+        <textarea id="meetingMsg" placeholder="Message" class="px-3 py-2 rounded bg-[#222] text-white"></textarea>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white py-2 rounded mt-2">Send Invite</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating My Meetings Button -->
+  <button id="showTodoBtn" class="fixed bottom-6 right-6 bg-blue-600 text-white px-5 py-3 rounded-full shadow-lg flex items-center gap-2 z-50 hover:bg-blue-700 transition text-base sm:text-lg">
+    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+    </svg>
+    My Meetings
+  </button>
+
+  <!-- To-Do List Bar (hidden by default) -->
+  <div id="todoBar" class="fixed bottom-0 left-0 w-full bg-[#181818] text-white px-8 py-4 shadow flex flex-col gap-2 z-50" style="display:none;">
+    <div class="flex justify-between items-center mb-2">
+      <div class="text-xl font-bold">My Scheduled Meetings</div>
+      <button id="closeTodoBar" class="text-gray-400 hover:text-red-400 text-2xl font-bold">&times;</button>
+      <div id="todoCount" class="text-sm text-gray-400 ml-4"></div>
+    </div>
+    <ul id="todoList" class="flex flex-col gap-2"></ul>
+  </div>
+
+  <script src="script.js"></script>
+</body>
 </html>
