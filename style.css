@@ -1,0 +1,154 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #a59eab;
+}
+
+/* Navbar styles */
+.navbar {
+    position: sticky;
+    top: 0;
+    width: 100%;
+    background: #181818;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 32px;
+    box-shadow: 0 2px 8px #0002;
+    z-index: 100;
+    margin-top: 0;
+}
+.nav-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #fff;
+    text-decoration: none;
+}
+.nav-links a {
+    color: #fff;
+    font-weight: 500;
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    transition: background 0.2s;
+    margin-left: 8px;
+}
+.nav-links a:hover {
+    background: #222;
+}
+
+/* Center form below navbar */
+.form {
+    width: 400px;
+    border-radius: 5px;
+    background-color: white;
+    padding: 20px 20px;
+    box-shadow: 0 4px 24px rgba(82, 77, 77, 0.08);
+    margin: 60px auto 0 auto; /* Top margin for spacing below navbar */
+    display: flex;
+    flex-direction: column;
+}
+
+.form-title {
+    text-align: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #181818;
+    margin-bottom: 18px;
+    letter-spacing: 1px;
+}
+
+label {
+    display: block;
+    font-weight: bolder;
+    margin: 5px 0px;
+}
+
+input {
+    width: 100%;
+    padding: 8px 5px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+}
+
+#submit-btn {
+    border: none;
+    background-color: blueviolet;
+    width: 100%;
+    padding: 10px 8px;
+    color: white;
+    font-weight: bolder;
+    text-transform: uppercase;
+    cursor: pointer;
+    margin: 9px 0px;
+    border-radius: 5px;
+    font-size: 16px;
+    transition: background 0.2s;
+}
+#submit-btn:hover {
+    background-color: #373438;
+}
+
+p {
+    font-size: 14px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: inline-block;
+    margin-top: 10px;
+}
+
+a {
+    text-decoration: none;
+    font-weight: bolder;
+    color: blueviolet;
+    margin-left: 4px;
+}
+
+@media (max-width: 500px) {
+    .form {
+        width: 95vw;
+        padding: 15px 5px;
+    }
+    input, #submit-btn {
+        font-size: 15px;
+    }
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    background: #fff;
+    color: #181818;
+    padding: 2rem 2.5rem;
+    border-radius: 16px;
+    max-width: 400px;
+    width: 90vw;
+    text-align: center;
+    position: relative;
+    box-shadow: 0 8px 40px #000a;
+}
+.close-btn {
+    position: absolute; top: 10px; right: 20px;
+    font-size: 2rem; cursor: pointer; color: #181818;
+    transition: color 0.2s;
+}
+.close-btn:hover { color: #f44; }

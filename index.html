@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign up</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="https://www.gstatic.com/firebasejs/9.8.4/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.4/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.4/firebase-auth-compat.js"></script>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <a href="index.html" class="nav-title">Meetly</a>
+      <div class="nav-links">
+        <a href="#" id="aboutBtn">About</a>
+        <a href="signIn.html">Sign In</a>
+      </div>
+    </nav>
+    <div class="form">
+      <h2 class="form-title">Sign Up to Meetly</h2>
+      <div class="email">
+        <label for="email">Email</label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          placeholder="Write your email"
+        />
+      </div>
+      <div class="pass">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="password"
+        />
+      </div>
+      <button id="submit-btn" onclick="signUp()">Sign Up</button>
+      <p>Already have an account ? <a href="signIn.html">Sign In</a></p>
+    </div>
+    <!-- About Modal -->
+    <div id="aboutModal" class="modal">
+      <div class="modal-content">
+        <span class="close-btn" id="aboutClose">&times;</span>
+        <h2>About Meetly</h2>
+        <p>
+          This website allows you to search and explore user profiles. Click on any card to view full details. You can also add new users to the directory using the "Add New" button.
+      
+        </p>
+      </div>
+    </div>
+    <script src="main.js"></script>
+    <script>
+      // About modal logic
+      document.getElementById("aboutBtn").onclick = function () {
+        document.getElementById("aboutModal").style.display = "flex";
+      };
+      document.getElementById("aboutClose").onclick = function () {
+        document.getElementById("aboutModal").style.display = "none";
+      };
+      document.getElementById("aboutModal").onclick = function (e) {
+        if (e.target === this) this.style.display = "none";
+      };
+    </script>
+  </body>
+</html>
